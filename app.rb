@@ -1,15 +1,21 @@
 require 'sinatra/base'
 
-# set :session_secret, 'super secret'
-
 class Battle < Sinatra::Base
+  enable :sessions
+
   get '/' do
     erb :enter_names
   end
 
   post '/names' do
-    @name1 = params[:name1]
-    @name2 = params[:name2]
+    session[:name1] = params[:name1]
+    session[:name2] = params[:name2]
+    redirect '/play'
+  end
+
+  get '/play' do
+    @name1 = session[:name1]
+    @name2 = session[:name2]
     erb :play
   end
 
